@@ -31,39 +31,34 @@ export class ProviderBAdapter implements FlightProvider {
   ) {}
 
   async searchFlights(from: string, to: string, date: string): Promise<Flight[]> {
-    try {
-      const url = this.configService.get<string>('PROVIDER_B_URL', 'http://provider-b:3002');
-      const response = await axios.get<ProviderBResponse>(`${url}/api/flights`, {
-        params: { from, to, date, passengers: 1 },
-        timeout: 5000,
-      });
+    const url = this.configService.get<string>('PROVIDER_B_URL', 'http://provider-b:3002');
+    const response = await axios.get<ProviderBResponse>(`${url}/api/flights`, {
+      params: { from, to, date, passengers: 1 },
+      timeout: 5000,
+    });
 
-      return response.data.data.map(raw => {
-        const flight = new Flight();
-        const departStr = raw.departure_time.replace(' ', 'T');
-        const arriveStr = raw.arrival_time.replace(' ', 'T');
+    return response.data.data.map(raw => {
+      const flight = new Flight();
+      const departStr = raw.departure_time.replace(' ', 'T');
+      const arriveStr = raw.arrival_time.replace(' ', 'T');
 
-        flight.id = this.flightIdGenerator.generateFlightId({
-          carrier: raw.airline_code,
-          flightNo: raw.number,
-          depart: departStr,
-        });
-        flight.carrier = raw.airline_code;
-        flight.flightNo = raw.number;
-        flight.from = raw.origin;
-        flight.to = raw.destination;
-        flight.depart = new Date(departStr);
-        flight.arrive = new Date(arriveStr);
-        flight.stops = raw.segments;
-        flight.price = raw.price.amount;
-        flight.currency = raw.price.currency;
-        flight.providers = [this.name];
-        flight.providerData = { [this.name]: raw };
-        return flight;
+      flight.id = this.flightIdGenerator.generateFlightId({
+        carrier: raw.airline_code,
+        flightNo: raw.number,
+        depart: departStr,
       });
-    } catch (error) {
-      this.logger.error(`Failed to fetch from ${this.name}: ${(error as Error).message}`);
-      return [];
-    }
+      flight.carrier = raw.airline_code;
+      flight.flightNo = raw.number;
+      flight.from = raw.origin;
+      flight.to = raw.destination;
+      flight.depart = new Date(departStr);
+      flight.arrive = new Date(arriveStr);
+      flight.stops = raw.segments;
+      flight.price = raw.price.amount;
+      flight.currency = raw.price.currency;
+      flight.providers = [this.name];
+      flight.providerData = { [this.name]: raw };
+      return flight;
+    });
   }
 }

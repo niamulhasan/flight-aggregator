@@ -8,8 +8,6 @@ jest.mock('axios');
 
 describe('ProviderAAdapter', () => {
   let adapter: ProviderAAdapter;
-  let flightIdGenerator: FlightIdGeneratorService;
-  let configService: ConfigService;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -26,8 +24,6 @@ describe('ProviderAAdapter', () => {
     }).compile();
 
     adapter = module.get<ProviderAAdapter>(ProviderAAdapter);
-    flightIdGenerator = module.get<FlightIdGeneratorService>(FlightIdGeneratorService);
-    configService = module.get<ConfigService>(ConfigService);
   });
 
   it('should be defined', () => {
@@ -62,13 +58,9 @@ describe('ProviderAAdapter', () => {
     expect(flights[0].flightNo).toBe('AA101');
   });
 
-  it('should return empty array and log error on axios failure', async () => {
-    const loggerSpy = jest.spyOn(adapter['logger'], 'error');
+  it('should throw error on axios failure', async () => {
     (axios.get as jest.Mock).mockRejectedValue(new Error('Network error'));
 
-    const flights = await adapter.searchFlights('DAC', 'DXB', '2026-07-01');
-
-    expect(flights).toEqual([]);
-    expect(loggerSpy).toHaveBeenCalled();
+    await expect(adapter.searchFlights('DAC', 'DXB', '2026-07-01')).rejects.toThrow('Network error');
   });
 });

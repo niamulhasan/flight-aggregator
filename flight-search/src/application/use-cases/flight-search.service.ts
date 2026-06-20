@@ -30,12 +30,10 @@ export class FlightSearchService {
       try {
         this.logger.log(`Calling provider: ${provider.name}`);
         const flights = await provider.searchFlights(from, to, date);
-        successProviders.push(provider.name);
-        return flights;
+        return { provider, flights, success: true };
       } catch (error) {
         this.logger.error(`Provider ${provider.name} failed: ${(error as Error).message}`);
-        failedProviders.push(provider.name);
-        return [];
+        return { provider, flights: [], success: false };
       }
     });
 
@@ -43,7 +41,20 @@ export class FlightSearchService {
 
     results.forEach((result) => {
       if (result.status === 'fulfilled') {
-        allFlights = [...allFlights, ...result.value];
+        const { provider, flights, success } = result.value;
+        if (success) {
+          successProviders.push(provider.name);
+          allFlights = [...allFlights, ...flights];
+        } else {
+          failedProviders.push(provider.name);
+        }
+      } else {
+        // Shouldn't happen as we caught errors in our map function, but just in case
+        const idx = results.indexOf(result);
+        if (this.providers[idx]) {
+          this.logger.error(`Provider ${this.providers[idx].name} failed unexpectedly`);
+          failedProviders.push(this.providers[idx].name);
+        }
       }
     });
 

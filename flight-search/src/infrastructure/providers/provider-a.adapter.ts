@@ -31,36 +31,31 @@ export class ProviderAAdapter implements FlightProvider {
   ) {}
 
   async searchFlights(from: string, to: string, date: string): Promise<Flight[]> {
-    try {
-      const url = this.configService.get<string>('PROVIDER_A_URL', 'http://provider-a:3001');
-      const response = await axios.get<ProviderAResponse>(`${url}/api/flights`, {
-        params: { from, to, date, passengers: 1 },
-        timeout: 5000,
-      });
+    const url = this.configService.get<string>('PROVIDER_A_URL', 'http://provider-a:3001');
+    const response = await axios.get<ProviderAResponse>(`${url}/api/flights`, {
+      params: { from, to, date, passengers: 1 },
+      timeout: 5000,
+    });
 
-      return response.data.flights.map(raw => {
-        const flight = new Flight();
-        flight.id = this.flightIdGenerator.generateFlightId({
-          carrier: raw.carrier,
-          flightNo: raw.flight_no,
-          depart: raw.depart,
-        });
-        flight.carrier = raw.carrier;
-        flight.flightNo = raw.flight_no;
-        flight.from = raw.from;
-        flight.to = raw.to;
-        flight.depart = new Date(raw.depart);
-        flight.arrive = new Date(raw.arrive);
-        flight.stops = raw.stops;
-        flight.price = raw.fare_usd;
-        flight.currency = 'USD';
-        flight.providers = [this.name];
-        flight.providerData = { [this.name]: raw };
-        return flight;
+    return response.data.flights.map(raw => {
+      const flight = new Flight();
+      flight.id = this.flightIdGenerator.generateFlightId({
+        carrier: raw.carrier,
+        flightNo: raw.flight_no,
+        depart: raw.depart,
       });
-    } catch (error) {
-      this.logger.error(`Failed to fetch from ${this.name}: ${(error as Error).message}`);
-      return [];
-    }
+      flight.carrier = raw.carrier;
+      flight.flightNo = raw.flight_no;
+      flight.from = raw.from;
+      flight.to = raw.to;
+      flight.depart = new Date(raw.depart);
+      flight.arrive = new Date(raw.arrive);
+      flight.stops = raw.stops;
+      flight.price = raw.fare_usd;
+      flight.currency = 'USD';
+      flight.providers = [this.name];
+      flight.providerData = { [this.name]: raw };
+      return flight;
+    });
   }
 }

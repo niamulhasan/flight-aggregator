@@ -30,39 +30,34 @@ export class ProviderCAdapter implements FlightProvider {
   ) {}
 
   async searchFlights(from: string, to: string, date: string): Promise<Flight[]> {
-    try {
-      const url = this.configService.get<string>('PROVIDER_C_URL', 'http://provider-c:3003');
-      const response = await axios.get<ProviderCResponse>(`${url}/api/flights`, {
-        params: { from, to, date, passengers: 1 },
-        timeout: 5000,
-      });
+    const url = this.configService.get<string>('PROVIDER_C_URL', 'http://provider-c:3003');
+    const response = await axios.get<ProviderCResponse>(`${url}/api/flights`, {
+      params: { from, to, date, passengers: 1 },
+      timeout: 5000,
+    });
 
-      return response.data.results.map(raw => {
-        const flight = new Flight();
-        const departDate = new Date(raw.times.dep * 1000);
-        const arriveDate = new Date(raw.times.arr * 1000);
+    return response.data.results.map(raw => {
+      const flight = new Flight();
+      const departDate = new Date(raw.times.dep * 1000);
+      const arriveDate = new Date(raw.times.arr * 1000);
 
-        flight.id = this.flightIdGenerator.generateFlightId({
-          carrier: raw.iata,
-          flightNo: raw.code,
-          depart: departDate,
-        });
-        flight.carrier = raw.iata;
-        flight.flightNo = raw.code;
-        flight.from = raw.route.src;
-        flight.to = raw.route.dst;
-        flight.depart = departDate;
-        flight.arrive = arriveDate;
-        flight.stops = raw.layovers;
-        flight.price = raw.total_price;
-        flight.currency = raw.currency;
-        flight.providers = [this.name];
-        flight.providerData = { [this.name]: raw };
-        return flight;
+      flight.id = this.flightIdGenerator.generateFlightId({
+        carrier: raw.iata,
+        flightNo: raw.code,
+        depart: departDate,
       });
-    } catch (error) {
-      this.logger.error(`Failed to fetch from ${this.name}: ${(error as Error).message}`);
-      return [];
-    }
+      flight.carrier = raw.iata;
+      flight.flightNo = raw.code;
+      flight.from = raw.route.src;
+      flight.to = raw.route.dst;
+      flight.depart = departDate;
+      flight.arrive = arriveDate;
+      flight.stops = raw.layovers;
+      flight.price = raw.total_price;
+      flight.currency = raw.currency;
+      flight.providers = [this.name];
+      flight.providerData = { [this.name]: raw };
+      return flight;
+    });
   }
 }

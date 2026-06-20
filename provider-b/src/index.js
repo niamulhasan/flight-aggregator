@@ -87,6 +87,12 @@ app.get('/health', (req, res) => {
  *         description: Successful response with Provider B's flight schema
  */
 app.get('/api/flights', (req, res) => {
+  // 10% chance of failure
+  if (Math.random() < 0.1) {
+    console.log('Provider B: Simulating failure');
+    return res.status(500).json({ error: 'Internal server error', provider: 'B' });
+  }
+
   const { from, to, date, passengers } = req.query;
   const filteredFlights = MOCK_FLIGHTS.data.filter(
     flight => flight.origin === from && flight.destination === to

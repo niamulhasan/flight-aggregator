@@ -39,7 +39,7 @@ describe('ProviderBAdapter', () => {
       departure_time: '2026-07-01 14:30',
       arrival_time: '2026-07-01 19:20',
       segments: 1,
-      price: { amount: 250, currency: 'USD' },
+      price: { amount: 265, currency: 'USD' },
     };
 
     (axios.get as jest.Mock).mockResolvedValue({
@@ -58,13 +58,9 @@ describe('ProviderBAdapter', () => {
     expect(flights[0].flightNo).toBe('BS118');
   });
 
-  it('should return empty array and log error on axios failure', async () => {
-    const loggerSpy = jest.spyOn(adapter['logger'], 'error');
+  it('should throw error on axios failure', async () => {
     (axios.get as jest.Mock).mockRejectedValue(new Error('Network error'));
 
-    const flights = await adapter.searchFlights('DAC', 'DXB', '2026-07-01');
-
-    expect(flights).toEqual([]);
-    expect(loggerSpy).toHaveBeenCalled();
+    await expect(adapter.searchFlights('DAC', 'DXB', '2026-07-01')).rejects.toThrow('Network error');
   });
 });
