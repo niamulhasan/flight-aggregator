@@ -21,6 +21,10 @@ Hi there! 👋 Thanks for reviewing my code!
 - 10% failure chance for testing fail-open strategy
 - Swagger docs for each
 
+### ✅ API Documentation
+- Swagger/OpenAPI docs for main app and all providers
+- Interactive UI for testing endpoints
+
 ---
 
 ## 2. Architecture: Clean Architecture
@@ -51,6 +55,12 @@ flight-search/src/
 ```bash
 # Start all services
 docker compose up --build
+
+# Access Swagger docs
+- Main app: http://localhost:3000/api/docs
+- Provider A: http://localhost:3001/api-docs
+- Provider B: http://localhost:3002/api-docs
+- Provider C: http://localhost:3003/api-docs
 
 # Run tests
 cd flight-search && npm run test       # Unit
