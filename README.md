@@ -95,15 +95,21 @@ curl -X POST http://localhost:3000/api/bookings \
 ## Running Tests
 
 ```bash
-# Run all tests
-npm run test
+# Run all unit tests
+cd flight-search && npm run test
 
-# Run e2e tests
-npm run test:e2e
+# Run external E2E tests (requires Docker services to be running)
+./e2e-test.sh
+
+# Run e2e tests via npm script
+cd flight-search && npm run test:e2e
 
 # Run tests with coverage
-npm run test:cov
+cd flight-search && npm run test:cov
 ```
+
+### External E2E Test Script
+The `e2e-test.sh` script is a comprehensive end-to-end test suite that verifies all API endpoints and requirements from `REQUIREMENT.md`. It requires all Docker services to be running.
 
 ## Project Structure
 
@@ -119,6 +125,7 @@ npm run test:cov
 ├── provider-a/           # Mock Provider A
 ├── provider-b/           # Mock Provider B
 ├── provider-c/           # Mock Provider C
+├── e2e-test.sh           # External end-to-end test suite
 ├── docker-compose.yml
 └── README.md
 ```
