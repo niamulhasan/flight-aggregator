@@ -18,6 +18,7 @@ Hi there! 👋 Thanks for reviewing my code!
 
 ### ✅ Mock Providers
 - 3 providers with unique schemas
+- Each provider runs in its own separate Docker container
 - 10% failure chance for testing fail-open strategy
 - Swagger docs for each
 

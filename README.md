@@ -9,7 +9,7 @@ A flight search aggregator built with NestJS, TypeScript, and Clean Architecture
 - 📊 Sort flights by price, duration, or departure time
 - 🔍 Filter by stops, carriers, and price range
 - 📝 Create and retrieve bookings
-- 🐳 Fully Dockerized
+- 🐳 Fully Dockerized: Each provider runs in its own separate container
 - 📚 Swagger API documentation
 - 🔒 Type-safe with TypeScript
 
