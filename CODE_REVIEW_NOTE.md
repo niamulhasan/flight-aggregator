@@ -79,7 +79,7 @@ cd flight-search && npm run test:e2e  # E2E
 
 ---
 
-## 6. Next Steps (If More Time)
+## 6. Next Steps (If I had more time)
 
 - Add Redis for search caching
 - Add circuit breakers for providers
