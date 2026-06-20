@@ -136,6 +136,9 @@ Tasks are split into **subtasks** when appropriate, making them smaller and easi
 ### 9. Clear Success Criteria
 All phase plans end with **checkbox-based success criteria** that make it easy to verify when the phase is complete.
 
+### 10. Plan Completion Validation
+Always check for existing completed work, update checkboxes, and move fully implemented plans to the completed plans section.
+
 ---
 
 ## How to Apply These Improvements
@@ -201,9 +204,26 @@ export class Flight {
 
 ---
 
+### 10. Plan Completion Validation
+**Always check for completed work and update plans accordingly!** When starting work:
+
+- First, explore the codebase and directory structure to identify what's already implemented
+- Compare existing code with the tasks listed in all plan files
+- If a task is fully implemented but not marked as completed in the plan, mark it as completed (change `[ ]` to `[x]`)
+- If an entire plan file is fully implemented but not listed in the completed plans section, move it to the completed plans
+
+**How to do this:**
+1. Use `Glob` and `Read` tools to explore codebase and check implemented files
+2. Compare with the checklist items in each plan file
+3. Update the plan files' checkboxes for completed tasks
+4. Update `plan_index.md` to move fully implemented plans to the "Completed Plans" section
+
+---
+
 ## Benefits
 These improvements ensure that:
 - AI agents know exactly what to do and in what order
 - No ambiguity about file locations or implementation details
 - Clear verification steps confirm when tasks are complete
 - All work follows constitutional standards
+- Plans stay up to date with the actual progress of the project

@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { Flight } from '../../domain/entities/flight.entity';
 import { FlightIdGeneratorService } from '../../domain/services/flight-id-generator.service';
-import { FlightProvider, SearchParams } from './flight-provider.interface';
+import { FlightProvider } from './flight-provider.interface';
 
 interface ProviderAFlight {
   carrier: string;
@@ -22,19 +22,19 @@ interface ProviderAResponse {
 
 @Injectable()
 export class ProviderAAdapter implements FlightProvider {
-  private readonly logger = new Logger(ProviderAAdapter.name);
   readonly name = 'Provider A';
+  private readonly logger = new Logger(ProviderAAdapter.name);
 
   constructor(
     private configService: ConfigService,
     private flightIdGenerator: FlightIdGeneratorService,
   ) {}
 
-  async searchFlights(params: SearchParams): Promise<Flight[]> {
+  async searchFlights(from: string, to: string, date: string): Promise<Flight[]> {
     try {
       const url = this.configService.get<string>('PROVIDER_A_URL', 'http://provider-a:3001');
       const response = await axios.get<ProviderAResponse>(`${url}/api/flights`, {
-        params,
+        params: { from, to, date, passengers: 1 },
         timeout: 5000,
       });
 
@@ -55,7 +55,7 @@ export class ProviderAAdapter implements FlightProvider {
         flight.price = raw.fare_usd;
         flight.currency = 'USD';
         flight.providers = [this.name];
-        flight.providerData = { providerA: raw };
+        flight.providerData = { [this.name]: raw };
         return flight;
       });
     } catch (error) {

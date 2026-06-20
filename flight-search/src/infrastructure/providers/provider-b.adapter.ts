@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { Flight } from '../../domain/entities/flight.entity';
 import { FlightIdGeneratorService } from '../../domain/services/flight-id-generator.service';
-import { FlightProvider, SearchParams } from './flight-provider.interface';
+import { FlightProvider } from './flight-provider.interface';
 
 interface ProviderBFlight {
   airline_code: string;
@@ -30,11 +30,11 @@ export class ProviderBAdapter implements FlightProvider {
     private flightIdGenerator: FlightIdGeneratorService,
   ) {}
 
-  async searchFlights(params: SearchParams): Promise<Flight[]> {
+  async searchFlights(from: string, to: string, date: string): Promise<Flight[]> {
     try {
       const url = this.configService.get<string>('PROVIDER_B_URL', 'http://provider-b:3002');
       const response = await axios.get<ProviderBResponse>(`${url}/api/flights`, {
-        params,
+        params: { from, to, date, passengers: 1 },
         timeout: 5000,
       });
 
@@ -58,7 +58,7 @@ export class ProviderBAdapter implements FlightProvider {
         flight.price = raw.price.amount;
         flight.currency = raw.price.currency;
         flight.providers = [this.name];
-        flight.providerData = { providerB: raw };
+        flight.providerData = { [this.name]: raw };
         return flight;
       });
     } catch (error) {

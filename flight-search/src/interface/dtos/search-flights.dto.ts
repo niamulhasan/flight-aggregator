@@ -1,5 +1,6 @@
 import { IsString, IsInt, Min, IsOptional, IsEnum, IsArray, IsNumber } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export enum SortBy {
   PRICE = 'price',
@@ -28,6 +29,7 @@ export class SearchFlightsDto {
   @ApiProperty({ description: 'Number of passengers', minimum: 1, example: 2 })
   @IsInt()
   @Min(1)
+  @Type(() => Number)
   passengers: number;
 
   @ApiPropertyOptional({ enum: SortBy, example: SortBy.PRICE })
@@ -43,6 +45,7 @@ export class SearchFlightsDto {
   @ApiPropertyOptional({ description: 'Maximum number of stops', example: 1 })
   @IsOptional()
   @IsInt()
+  @Type(() => Number)
   maxStops?: number;
 
   @ApiPropertyOptional({ description: 'List of carrier codes', example: ['AA', 'EK'] })
@@ -54,10 +57,12 @@ export class SearchFlightsDto {
   @ApiPropertyOptional({ description: 'Minimum price', example: 200 })
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   minPrice?: number;
 
   @ApiPropertyOptional({ description: 'Maximum price', example: 500 })
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   maxPrice?: number;
 }
