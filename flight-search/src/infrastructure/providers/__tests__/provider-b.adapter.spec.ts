@@ -50,6 +50,7 @@ describe('ProviderBAdapter', () => {
 
     expect(axios.get).toHaveBeenCalledWith('http://localhost:3002/api/flights', {
       params: { from: 'DAC', to: 'DXB', date: '2026-07-01', passengers: 1 },
+      timeout: 5000,
     });
 
     expect(flights.length).toBe(1);
