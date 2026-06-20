@@ -1,6 +1,6 @@
 import { IsString, IsInt, Min, IsOptional, IsEnum, IsArray, IsNumber } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
 
 export enum SortBy {
   PRICE = 'price',
@@ -52,6 +52,12 @@ export class SearchFlightsDto {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value.split(',').map((s) => s.trim());
+    }
+    return value;
+  })
   carriers?: string[];
 
   @ApiPropertyOptional({ description: 'Minimum price', example: 200 })
