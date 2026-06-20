@@ -54,7 +54,8 @@ docker compose up --build
 
 # Run tests
 cd flight-search && npm run test       # Unit
-./e2e-test.sh                          # E2E
+cd flight-search && npm run test:e2e  # E2E
+./e2e-test.sh                          # External E2E testing
 ```
 
 ---
