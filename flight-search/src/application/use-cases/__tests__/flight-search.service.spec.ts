@@ -6,7 +6,11 @@ import { FlightFilterService } from '../../services/flight-filter.service';
 import { FlightProvider } from '../../../infrastructure/providers/flight-provider.interface';
 import { Flight } from '../../../domain/entities/flight';
 
-const createMockFlight = (id: string, price: number, providerName: string): Flight => {
+const createMockFlight = (
+  id: string,
+  price: number,
+  providerName: string,
+): Flight => {
   return {
     id,
     carrier: 'AA',
@@ -72,7 +76,9 @@ describe('FlightSearchService', () => {
     }).compile();
 
     service = module.get<FlightSearchService>(FlightSearchService);
-    deduplicator = module.get<FlightDeduplicatorService>(FlightDeduplicatorService);
+    deduplicator = module.get<FlightDeduplicatorService>(
+      FlightDeduplicatorService,
+    );
     sorter = module.get<FlightSorterService>(FlightSorterService);
     filter = module.get<FlightFilterService>(FlightFilterService);
   });

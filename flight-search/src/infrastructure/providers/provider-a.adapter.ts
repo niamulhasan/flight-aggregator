@@ -30,14 +30,21 @@ export class ProviderAAdapter implements FlightProvider {
     private flightIdGenerator: FlightIdGeneratorService,
   ) {}
 
-  async searchFlights(from: string, to: string, date: string): Promise<Flight[]> {
-    const url = this.configService.get<string>('PROVIDER_A_URL', 'http://provider-a:3001');
+  async searchFlights(
+    from: string,
+    to: string,
+    date: string,
+  ): Promise<Flight[]> {
+    const url = this.configService.get<string>(
+      'PROVIDER_A_URL',
+      'http://provider-a:3001',
+    );
     const response = await axios.get<ProviderAResponse>(`${url}/api/flights`, {
       params: { from, to, date, passengers: 1 },
       timeout: 5000,
     });
 
-    return response.data.flights.map(raw => {
+    return response.data.flights.map((raw) => {
       const flight = new Flight();
       flight.id = this.flightIdGenerator.generateFlightId({
         carrier: raw.carrier,

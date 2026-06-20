@@ -34,7 +34,9 @@ describe('BookingService', () => {
     }).compile();
 
     service = module.get<BookingService>(BookingService);
-    refGenerator = module.get<BookingReferenceGeneratorService>(BookingReferenceGeneratorService);
+    refGenerator = module.get<BookingReferenceGeneratorService>(
+      BookingReferenceGeneratorService,
+    );
   });
 
   afterEach(() => {
@@ -50,7 +52,9 @@ describe('BookingService', () => {
       id: '1',
       reference: 'FB-TEST123',
       flightId: 'flight123',
-      passengers: [{ firstName: 'John', lastName: 'Doe', email: 'john@example.com' }],
+      passengers: [
+        { firstName: 'John', lastName: 'Doe', email: 'john@example.com' },
+      ],
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -59,7 +63,9 @@ describe('BookingService', () => {
 
     const result = await service.createBooking({
       flightId: 'flight123',
-      passengers: [{ firstName: 'John', lastName: 'Doe', email: 'john@example.com' }],
+      passengers: [
+        { firstName: 'John', lastName: 'Doe', email: 'john@example.com' },
+      ],
     });
 
     expect(mockBookingRepository.save).toHaveBeenCalled();
@@ -86,6 +92,8 @@ describe('BookingService', () => {
   it('should throw NotFoundException if booking not found', async () => {
     mockBookingRepository.findByReference.mockResolvedValue(null);
 
-    await expect(service.getBookingByReference('invalid')).rejects.toThrow(NotFoundException);
+    await expect(service.getBookingByReference('invalid')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 });

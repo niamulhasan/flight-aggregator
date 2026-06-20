@@ -5,11 +5,7 @@ import { ProviderCAdapter } from './provider-c.adapter';
 import { FlightProvider } from './flight-provider.interface';
 import { FlightIdGeneratorService } from '../../domain/services/flight-id-generator.service';
 
-const flightProviders = [
-  ProviderAAdapter,
-  ProviderBAdapter,
-  ProviderCAdapter,
-];
+const flightProviders = [ProviderAAdapter, ProviderBAdapter, ProviderCAdapter];
 
 @Module({
   providers: [

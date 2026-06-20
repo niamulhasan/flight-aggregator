@@ -1,16 +1,24 @@
-import { IsString, IsInt, Min, IsOptional, IsEnum, IsArray, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsInt,
+  Min,
+  IsOptional,
+  IsEnum,
+  IsArray,
+  IsNumber,
+} from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type, Transform } from 'class-transformer';
 
 export enum SortBy {
   PRICE = 'price',
   DURATION = 'duration',
-  DEPARTURE = 'departure'
+  DEPARTURE = 'departure',
 }
 
 export enum SortOrder {
   ASC = 'asc',
-  DESC = 'desc'
+  DESC = 'desc',
 }
 
 export class SearchFlightsDto {
@@ -22,7 +30,10 @@ export class SearchFlightsDto {
   @IsString()
   to: string;
 
-  @ApiProperty({ description: 'Travel date (YYYY-MM-DD)', example: '2026-07-01' })
+  @ApiProperty({
+    description: 'Travel date (YYYY-MM-DD)',
+    example: '2026-07-01',
+  })
   @IsString()
   date: string;
 
@@ -48,7 +59,10 @@ export class SearchFlightsDto {
   @Type(() => Number)
   maxStops?: number;
 
-  @ApiPropertyOptional({ description: 'List of carrier codes', example: ['AA', 'EK'] })
+  @ApiPropertyOptional({
+    description: 'List of carrier codes',
+    example: ['AA', 'EK'],
+  })
   @IsOptional()
   @IsArray()
   @IsString({ each: true })

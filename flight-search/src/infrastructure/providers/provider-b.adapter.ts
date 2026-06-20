@@ -30,14 +30,21 @@ export class ProviderBAdapter implements FlightProvider {
     private flightIdGenerator: FlightIdGeneratorService,
   ) {}
 
-  async searchFlights(from: string, to: string, date: string): Promise<Flight[]> {
-    const url = this.configService.get<string>('PROVIDER_B_URL', 'http://provider-b:3002');
+  async searchFlights(
+    from: string,
+    to: string,
+    date: string,
+  ): Promise<Flight[]> {
+    const url = this.configService.get<string>(
+      'PROVIDER_B_URL',
+      'http://provider-b:3002',
+    );
     const response = await axios.get<ProviderBResponse>(`${url}/api/flights`, {
       params: { from, to, date, passengers: 1 },
       timeout: 5000,
     });
 
-    return response.data.data.map(raw => {
+    return response.data.data.map((raw) => {
       const flight = new Flight();
       const departStr = raw.departure_time.replace(' ', 'T');
       const arriveStr = raw.arrival_time.replace(' ', 'T');

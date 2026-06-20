@@ -32,7 +32,9 @@ export class FlightSearchService {
         const flights = await provider.searchFlights(from, to, date);
         return { provider, flights, success: true };
       } catch (error) {
-        this.logger.error(`Provider ${provider.name} failed: ${(error as Error).message}`);
+        this.logger.error(
+          `Provider ${provider.name} failed: ${(error as Error).message}`,
+        );
         return { provider, flights: [], success: false };
       }
     });
@@ -52,7 +54,9 @@ export class FlightSearchService {
         // Shouldn't happen as we caught errors in our map function, but just in case
         const idx = results.indexOf(result);
         if (this.providers[idx]) {
-          this.logger.error(`Provider ${this.providers[idx].name} failed unexpectedly`);
+          this.logger.error(
+            `Provider ${this.providers[idx].name} failed unexpectedly`,
+          );
           failedProviders.push(this.providers[idx].name);
         }
       }
@@ -67,8 +71,7 @@ export class FlightSearchService {
     );
 
     const flightDtos = processedFlights.map(this.toFlightResponseDto);
-    const completeness =
-      failedProviders.length === 0 ? 'complete' : 'partial';
+    const completeness = failedProviders.length === 0 ? 'complete' : 'partial';
 
     return {
       flights: flightDtos,

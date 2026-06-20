@@ -48,10 +48,13 @@ describe('ProviderAAdapter', () => {
 
     const flights = await adapter.searchFlights('DAC', 'DXB', '2026-07-01');
 
-    expect(axios.get).toHaveBeenCalledWith('http://localhost:3001/api/flights', {
-      params: { from: 'DAC', to: 'DXB', date: '2026-07-01', passengers: 1 },
-      timeout: 5000,
-    });
+    expect(axios.get).toHaveBeenCalledWith(
+      'http://localhost:3001/api/flights',
+      {
+        params: { from: 'DAC', to: 'DXB', date: '2026-07-01', passengers: 1 },
+        timeout: 5000,
+      },
+    );
 
     expect(flights.length).toBe(1);
     expect(flights[0].carrier).toBe('AA');
@@ -61,6 +64,8 @@ describe('ProviderAAdapter', () => {
   it('should throw error on axios failure', async () => {
     (axios.get as jest.Mock).mockRejectedValue(new Error('Network error'));
 
-    await expect(adapter.searchFlights('DAC', 'DXB', '2026-07-01')).rejects.toThrow('Network error');
+    await expect(
+      adapter.searchFlights('DAC', 'DXB', '2026-07-01'),
+    ).rejects.toThrow('Network error');
   });
 });

@@ -11,7 +11,10 @@ export class SearchController {
 
   @Get('search')
   @ApiOperation({ summary: 'Search flights across multiple providers' })
-  @ApiOkResponse({ description: 'Search results with completeness information', type: SearchResponseDto })
+  @ApiOkResponse({
+    description: 'Search results with completeness information',
+    type: SearchResponseDto,
+  })
   async search(
     @Query(ValidationPipe) params: SearchFlightsDto,
   ): Promise<SearchResponseDto> {

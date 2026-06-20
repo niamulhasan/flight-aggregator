@@ -31,7 +31,9 @@ export class BookingService {
     const booking = await this.repository.findByReference(reference);
 
     if (!booking) {
-      throw new NotFoundException(`Booking with reference ${reference} not found`);
+      throw new NotFoundException(
+        `Booking with reference ${reference} not found`,
+      );
     }
 
     return this.toBookingResponseDto(booking);

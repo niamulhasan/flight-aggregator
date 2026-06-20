@@ -19,7 +19,7 @@ export class FlightDeduplicatorService {
     for (const [, group] of flightMap) {
       // Find flight with lowest price
       const lowestPriceFlight = group.reduce((min, flight) =>
-        flight.price < min.price ? flight : min
+        flight.price < min.price ? flight : min,
       );
 
       // Create a new Flight instance
@@ -27,14 +27,17 @@ export class FlightDeduplicatorService {
       Object.assign(resultFlight, lowestPriceFlight);
 
       // Merge providers from all flights in group
-      const allProviders = [...new Set(group.flatMap(f => f.providers))];
+      const allProviders = [...new Set(group.flatMap((f) => f.providers))];
       resultFlight.providers = allProviders;
 
       // Merge providerData (combine all raw data)
-      resultFlight.providerData = group.reduce((acc, flight) => ({
-        ...acc,
-        ...flight.providerData
-      }), {});
+      resultFlight.providerData = group.reduce(
+        (acc, flight) => ({
+          ...acc,
+          ...flight.providerData,
+        }),
+        {},
+      );
 
       result.push(resultFlight);
     }
