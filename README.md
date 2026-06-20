@@ -94,22 +94,32 @@ curl -X POST http://localhost:3000/api/bookings \
 
 ## Running Tests
 
+### Unit Tests
 ```bash
-# Run all unit tests
-cd flight-search && npm run test
-
-# Run external E2E tests (requires Docker services to be running)
-./e2e-test.sh
-
-# Run e2e tests via npm script
-cd flight-search && npm run test:e2e
+# Run all tests
+npm run test
 
 # Run tests with coverage
-cd flight-search && npm run test:cov
+npm run test:cov
 ```
 
-### External E2E Test Script
-The `e2e-test.sh` script is a comprehensive end-to-end test suite that verifies all API endpoints and requirements from `REQUIREMENT.md`. It requires all Docker services to be running.
+### External E2E Testing
+We have a bash script that tests all API endpoints end-to-end:
+
+```bash
+# From project root
+./e2e-test.sh
+
+# Or from flight-search directory
+npm run test:e2e
+```
+The script tests:
+- All 3 mock providers
+- Flight search with all sorting/filtering options
+- Booking creation and retrieval
+- Swagger documentation availability
+- Response format validity (stable flight IDs, completeness info)
+
 
 ## Project Structure
 
@@ -125,7 +135,6 @@ The `e2e-test.sh` script is a comprehensive end-to-end test suite that verifies 
 ├── provider-a/           # Mock Provider A
 ├── provider-b/           # Mock Provider B
 ├── provider-c/           # Mock Provider C
-├── e2e-test.sh           # External end-to-end test suite
 ├── docker-compose.yml
 └── README.md
 ```
