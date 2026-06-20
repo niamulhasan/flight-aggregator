@@ -3,6 +3,45 @@
 ## Overview
 This document defines the standards and patterns used to make our plans AI-agent-friendly. These improvements make the plans more actionable, specific, and easier for AI agents to execute.
 
+## Key Principles
+
+### Git Commits on Completion
+
+**Always commit after each phase/feature is complete!** When a feature is successfully implemented and tested:
+1. `git add -A`
+2. `git commit -m "Helpful message describing the completed work"`
+
+### Docker-First Testing
+
+**Always use Docker Compose for testing!** Never run services directly on the host. The AI agent will execute the clean build workflow automatically.
+
+**Clean Build Workflow (AI executes this!):**
+```bash
+# 1. Stop and clean up all containers/volumes
+docker-compose down --volumes --remove-orphans
+# OR
+docker compose down --volumes --remove-orphans
+
+# 2. Build and start all services
+docker-compose up --build
+# OR
+docker compose up --build
+```
+
+**Why this workflow?**
+- Ensures no leftover containers/volumes interfere
+- Forces fresh build with all changes
+- Clean slate for testing
+- Eliminates "it was working before" issues
+
+**Why Docker-First?**
+- Consistent environment across dev/prod
+- All services isolated
+- No "it works on my machine" issues
+- Matches production deployment
+
+---
+
 ## Key Improvements Applied
 
 ### 1. Explicit Task Order

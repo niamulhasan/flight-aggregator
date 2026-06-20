@@ -1,0 +1,85 @@
+services:
+  # Main Flight Search Application
+  flight-search-app:
+    build:
+      context: ./flight-search
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=flight_search
+      - PROVIDER_A_URL=http://provider-a:3001
+      - PROVIDER_B_URL=http://provider-b:3002
+      - PROVIDER_C_URL=http://provider-c:3003
+    depends_on:
+      - postgres
+    networks:
+      - flight-network
+    restart: unless-stopped
+
+  # Mock Provider A
+  provider-a:
+    build:
+      context: ./provider-a
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+    networks:
+      - flight-network
+    restart: unless-stopped
+
+  # Mock Provider B
+  provider-b:
+    build:
+      context: ./provider-b
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+    networks:
+      - flight-network
+    restart: unless-stopped
+
+  # Mock Provider C
+  provider-c:
+    build:
+      context: ./provider-c
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+    networks:
+      - flight-network
+    restart: unless-stopped
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=flight_search
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - flight-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  flight-network:
+    driver: bridge

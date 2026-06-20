@@ -501,3 +501,30 @@ Execute tasks in this exact order:
 - [ ] Environment variables validated on application startup
 - [ ] All files created at correct paths
 - [ ] Can run `docker-compose up --build` successfully
+
+---
+
+## Manual Testing Workflow (AI Executes This!)
+
+**The AI agent will follow this exact workflow every time testing is needed!**
+
+### Step 1: Clean Up
+```bash
+cd /Users/niamulhasan/DEVELOPMENTS/assignment/flight-search
+docker-compose down --volumes --remove-orphans
+# OR
+docker compose down --volumes --remove-orphans
+```
+
+### Step 2: Build & Start (Detached Mode)
+```bash
+docker-compose up --build -d
+# OR
+docker compose up --build -d
+```
+
+### Step 3: Wait for Services & Verify
+- Check that all 5 containers are running
+- Verify services respond at their URLs
+
+---
