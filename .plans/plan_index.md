@@ -2,6 +2,15 @@
 
 This file tracks all plans for the flight search aggregator project.
 
+## How Checkboxes Work
+
+- `[ ]` = **Not started** - Implementation/validation pending
+- `[x]` = **Completed** - Task finished and verified
+
+All checkboxes start as `[ ]` (unchecked) since implementation hasn't begun. Check them as you complete each step!
+
+---
+
 ## Constitution
 
 - [clean_architecture.md](constitutions/clean_architecture.md) - Clean Architecture, SOLID, and project rules
