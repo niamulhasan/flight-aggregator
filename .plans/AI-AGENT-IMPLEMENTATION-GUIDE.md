@@ -5,9 +5,13 @@ This document defines the standards and patterns used to make our plans AI-agent
 
 ## Key Principles
 
+### Human-in-the-Loop Testing Confirmation
+
+**Always wait for user feedback before continuing after testing!** When you ask the user to verify something (like checking services are running, test results, etc.), **do NOT proceed with next steps** until the user confirms the result or gives you feedback.
+
 ### Git Commits on Completion
 
-**Always commit after each phase/feature is complete!** When a feature is successfully implemented and tested:
+**Always commit after each phase/feature is complete!** Before moving to next task, check git status. If changes aren't committed yet:
 1. `git add -A`
 2. `git commit -m "Helpful message describing the completed work"`
 

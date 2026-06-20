@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import databaseConfig from './config/database.config';
 import { validate } from './config/env.validation';
+import { Flight } from './domain/entities/flight.entity';
+import { Booking } from './domain/entities/booking.entity';
 
 @Module({
   imports: [
@@ -14,6 +16,7 @@ import { validate } from './config/env.validation';
     TypeOrmModule.forRootAsync({
       useFactory: () => databaseConfig(),
     }),
+    TypeOrmModule.forFeature([Flight, Booking]),
   ],
 })
 export class AppModule {}
